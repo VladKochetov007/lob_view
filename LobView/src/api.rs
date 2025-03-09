@@ -7,7 +7,7 @@ use std::sync::{Arc, Mutex};
 use thiserror::Error;
 use tokio::sync::{broadcast, mpsc};
 use tokio_tungstenite::{connect_async, tungstenite::protocol::Message};
-use tracing::{debug, error, info, warn};
+use tracing::{error, info, warn};
 use url::Url;
 
 /// Binance API Errors
@@ -77,12 +77,15 @@ struct BinanceOrderBookSnapshot {
 #[derive(Debug, Deserialize)]
 struct BinanceDepthUpdate {
     #[serde(rename = "e")]
+    #[allow(dead_code)]
     event_type: String,
     #[serde(rename = "E")]
+    #[allow(dead_code)]
     event_time: u64,
     #[serde(rename = "s")]
     symbol: String,
     #[serde(rename = "U")]
+    #[allow(dead_code)]
     first_update_id: u64,
     #[serde(rename = "u")]
     final_update_id: u64,
@@ -218,7 +221,7 @@ impl BinanceClient {
         // Connect to Binance WebSocket API
         let url = Url::parse("wss://stream.binance.com:9443/ws")?;
         let (ws_stream, _) = connect_async(url).await?;
-        let (mut ws_sender, mut ws_reader) = ws_stream.split;
+        let (mut ws_sender, mut ws_reader) = ws_stream.split();
         
         info!("Connected to Binance WebSocket");
         
@@ -465,12 +468,15 @@ impl BinanceClient {
 #[async_trait]
 pub trait OrderBookProvider {
     /// Subscribe to order book updates for a symbol
+    #[allow(unused)]
     async fn subscribe(&self, symbol: &str) -> Result<(), BinanceError>;
     
     /// Get the current order book for a symbol
+    #[allow(unused)]
     fn get_orderbook(&self, symbol: &str) -> Option<OrderBook>;
     
     /// Get the order book update stream for a symbol
+    #[allow(unused)]
     fn orderbook_stream(&self, symbol: &str) -> Result<broadcast::Receiver<OrderBookEvent>, BinanceError>;
 }
 
