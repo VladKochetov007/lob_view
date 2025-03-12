@@ -3,7 +3,7 @@ use std::error::Error;
 use std::time::Duration;
 use tokio::select;
 use tokio::time::Instant;
-use tracing::{info, warn};
+use tracing::{info};
 
 /// Example of using the order book stream
 pub async fn run_orderbook_stream_example() -> Result<(), Box<dyn Error>> {
