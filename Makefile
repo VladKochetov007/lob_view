@@ -1,2 +1,6 @@
-cli-demo:
-	cd LobView/src/examples && cargo run -- stream
+build:
+	go build -o lob_view cmd/lob_view/main.go
+
+run:
+	go run cmd/lob_view/main.go
+
