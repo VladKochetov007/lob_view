@@ -2,27 +2,26 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/VladKochetov007/lob_view/pkg/exchanges"
 	"github.com/VladKochetov007/lob_view/pkg/exchanges/binance"
 )
 
 func main() {
-	// Parse command line arguments
-	symbol := flag.String("symbol", "BTC/USDT", "Trading pair symbol (e.g. BTC/USDT)")
-	depth := flag.Int("depth", 10, "Number of order book levels to display")
-	flag.Parse()
+	// Фиксированные параметры для простоты примера
+	symbol := "BTC/USDT"
+	depth := 10
 
-	fmt.Printf("Starting LOB Viewer for %s\n", *symbol)
-	fmt.Printf("Displaying top %d levels\n", *depth)
+	fmt.Printf("Starting LOB Viewer for %s\n", symbol)
+	fmt.Printf("Displaying top %d levels\n", depth)
 	
 	// Create Binance order book provider
-	provider := binance.NewBinanceOrderBookProvider(*symbol)
+	provider := binance.NewBinanceOrderBookProvider(symbol)
 	
 	// Connect to the exchange
 	fmt.Println("Connecting to Binance...")
@@ -48,8 +47,11 @@ func main() {
 	// Start displaying the order book
 	fmt.Println("Waiting for order book data...")
 	
+	// Небольшая задержка для получения стабильных данных
+	time.Sleep(2 * time.Second)
+	
 	// Run in a separate goroutine so we can handle signals
-	go exchanges.DisplayOrderBookContinuously(updates, *depth)
+	go exchanges.DisplayOrderBookContinuously(updates, depth)
 	
 	// Wait for termination signal
 	<-sigChan

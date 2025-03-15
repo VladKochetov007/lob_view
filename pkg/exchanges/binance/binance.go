@@ -108,10 +108,18 @@ func (p *BinanceOrderBookProvider) listenForUpdates() {
 
 // processOrderBookUpdate processes an order book update from Binance
 func (p *BinanceOrderBookProvider) processOrderBookUpdate(response BinanceOrderBookResponse) {
+	// Determine timestamp - use current time if EventTime is not provided
+	var timestamp time.Time
+	if response.EventTime > 0 {
+		timestamp = time.UnixMilli(response.EventTime)
+	} else {
+		timestamp = time.Now() // Use current local time if EventTime not available
+	}
+	
 	// Create a new order book
 	ob := orderbook.OrderBook{
 		Symbol:     p.symbol,
-		LastUpdate: time.Unix(0, response.EventTime*int64(time.Millisecond)),
+		LastUpdate: timestamp,
 		Bids:       make([]orderbook.PriceLevel, 0, len(response.Bids)),
 		Asks:       make([]orderbook.PriceLevel, 0, len(response.Asks)),
 	}

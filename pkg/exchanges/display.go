@@ -4,7 +4,6 @@ package exchanges
 import (
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/VladKochetov007/lob_view/pkg/orderbook"
 )
@@ -28,8 +27,23 @@ func DisplayOrderBook(ob orderbook.OrderBook, depth int) {
 		depth = DefaultDepth
 	}
 	
+	// Более строгая проверка на качество данных
+	if len(ob.Bids) == 0 || len(ob.Asks) == 0 {
+		return // Пропускаем, если нет данных
+	}
+	
+	// Пропускаем, если нет валидной цены в первом элементе
+	if ob.Bids[0].Price <= 0 || ob.Asks[0].Price <= 0 {
+		return
+	}
+	
 	// Get the top levels
 	levels := ob.GetTopLevels(depth)
+	
+	// Пропускаем, если нет достаточного количества уровней
+	if len(levels) < 3 { // Требуем как минимум 3 уровня
+		return
+	}
 	
 	// Calculate maximum width for better formatting
 	maxBidPrice := 0
@@ -59,7 +73,7 @@ func DisplayOrderBook(ob orderbook.OrderBook, depth int) {
 	
 	// Print header
 	fmt.Printf("\n%s%s Order Book - %s %s\n", Bold, Blue, ob.Symbol, Reset)
-	fmt.Printf("%sLast update: %s%s\n\n", Yellow, ob.LastUpdate.Format(time.RFC3339), Reset)
+	fmt.Printf("%sLast update: %s%s\n\n", Yellow, ob.LastUpdate.Format("2006-01-02T15:04:05.000Z07:00"), Reset)
 	
 	// Print header row
 	bidPriceHeader := "Bid Price"
@@ -91,11 +105,19 @@ func DisplayOrderBook(ob orderbook.OrderBook, depth int) {
 
 // DisplayOrderBookContinuously continuously displays the order book updates
 func DisplayOrderBookContinuously(updates <-chan orderbook.OrderBook, depth int) {
+	// Устанавливаем минимальный размер ордербука для отображения
+	const minLevels = 5 // Должно быть как минимум 5 уровней для отображения
+	
 	for ob := range updates {
-		// Clear terminal (this is basic and might not work on all terminals)
+		// Строгая проверка на полные данные
+		if len(ob.Bids) < minLevels || len(ob.Asks) < minLevels {
+			continue // Пропускаем неполные данные
+		}
+		
+		// Очищаем терминал перед каждым выводом
 		fmt.Print("\033[H\033[2J")
 		
-		// Display the order book
+		// Выводим только один полный ордербук
 		DisplayOrderBook(ob, depth)
 	}
 } 

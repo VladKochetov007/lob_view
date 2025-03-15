@@ -4,8 +4,8 @@ A lightweight terminal application for displaying real-time order book data from
 
 ## Features
 
-- Real-time order book data from Binance
-- Colored terminal output showing top N levels of bid and ask prices
+- Real-time order book data from Binance for BTC/USDT pair
+- Colored terminal output showing top 10 levels of bid and ask prices
 - Minimal dependencies
 - Extensible design with interfaces for adding other exchanges
 
@@ -22,22 +22,31 @@ go build -o lob_view cmd/lob_view/main.go
 
 ## Usage
 
-Run the application with default settings (BTC/USDT, 10 levels):
+Run the application to view BTC/USDT order book:
 
 ```bash
 ./lob_view
 ```
 
-Or specify a different trading pair and/or depth:
+## Example Output
 
-```bash
-./lob_view -symbol ETH/USDT -depth 15
 ```
+ Order Book - btc/usdt 
+Last update: 2025-06-12T15:23:45.123Z+03:00
 
-## Command Line Options
-
-- `-symbol`: Trading pair symbol (default: "BTC/USDT")
-- `-depth`: Number of order book levels to display (default: 10)
+Bid Price      | Bid Qty    | Ask Price      | Ask Qty   
+---------------------------------------------------------
+84211.76000000 | 0.24183000 | 84211.77000000 | 7.83714000
+84211.75000000 | 0.00070000 | 84211.78000000 | 0.00021000
+84211.74000000 | 0.00041000 | 84211.79000000 | 0.00007000
+84211.73000000 | 0.00023000 | 84211.99000000 | 0.00021000
+84211.72000000 | 0.00014000 | 84212.00000000 | 0.05813000
+84211.26000000 | 0.00007000 | 84212.12000000 | 0.00007000
+84211.13000000 | 0.00007000 | 84212.24000000 | 0.00021000
+84211.12000000 | 0.00007000 | 84212.25000000 | 0.07151000
+84210.71000000 | 0.00030000 | 84212.26000000 | 0.35626000
+84210.70000000 | 0.08415000 | 84212.33000000 | 0.10165000
+```
 
 ## License
 
