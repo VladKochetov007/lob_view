@@ -12,9 +12,9 @@ import (
 )
 
 func (c *BinanceClient) readMessages() {
-	// Основной цикл чтения сообщений из WebSocket
+	// TODO: Implement
 }
 
 func (c *BinanceClient) processMessage(msg []byte) {
-	// Обработка и рассылка обновлений
-} 
+	// TODO: Implement
+}

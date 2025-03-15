@@ -54,9 +54,9 @@ func NewBinanceClient() *BinanceClient {
 }
 
 func (c *BinanceClient) Subscribe(symbol string) (<-chan OrderBookEvent, error) {
-	// Регистрация нового подписчика
+	// TODO: Implement
 }
 
 func (c *BinanceClient) Unsubscribe(symbol string, ch <-chan OrderBookEvent) {
-	// Удаление подписчика и очистка ресурсов
-} 
+	// TODO: Implement
+}
