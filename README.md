@@ -17,7 +17,7 @@ Clone the repository and build the application:
 git clone https://github.com/VladKochetov007/lob_view.git
 cd lob_view
 go mod tidy
-go build -o lob_view cmd/lob_view/main.go
+make run
 ```
 
 ## Usage
@@ -48,10 +48,6 @@ Bid Price      | Bid Qty    | Ask Price      | Ask Qty
 84210.70000000 | 0.08415000 | 84212.33000000 | 0.10165000
 ```
 
-## License
-
-MIT License - see the LICENSE file for details.
-
 ## Project Structure
 
 The project follows a clean architecture approach with the following components:
@@ -61,24 +57,7 @@ The project follows a clean architecture approach with the following components:
 - `pkg/exchanges/binance`: Binance-specific implementation of the OrderBookSource interface
 - `cmd/lob_view`: Main application entry point
 
-## Architecture
 
-The application is designed around interfaces to allow for easy extension to support other exchanges:
+## License
 
-```
-OrderBookSource (Interface)
-     |
-     +--- BinanceOrderBookProvider (Implementation)
-     |
-     +--- [Future: Other Exchange Providers]
-```
-
-Each exchange provider implements the OrderBookSource interface, which standardizes how order book data is retrieved and processed regardless of the specific exchange API details.
-
-## Future Enhancements
-
-- Support for additional exchanges (e.g., Coinbase, Kraken)
-- WebSocket reconnection logic
-- More detailed order book statistics
-- Order book visualization with charts
-- WebSocket server for browser-based visualization
+MIT License - see the LICENSE file for details.
